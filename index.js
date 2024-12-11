@@ -10,13 +10,12 @@ import mainRouter from "./routes/mainRoutes.js";
 
 dotenv.config();
 const app = express();
-app.use(cors());
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended : false}));
-
-
-
+// app.use(cors());
+app.use(cors());
 
 app.get('/', requireAuth,mainRouter);
 app.use(authrouter);

@@ -47,13 +47,12 @@ const handleGetsignUp = (req,res)=>{
 }
 
 const handlePostsignUp = async (req,res)=>{
-    const {firstName, lastName, email, password} = req.body;
+    const {firstName, lastName, email, password, role} = req.body;
     const userName = firstName+" "+ lastName;
-    console.log(req.body);
+    // console.log(req.body);
     try{
-      const user =await userSchme.create({userName,password,email});
+      const user =await userSchme.create({userName,password,email,role});
       const  token = getToken(user._id);
-    //   console.log(token);
       res.cookie('jwt',token, {httpOnly : true, maxAge : maxAge*1000});
       res.status(201).json(user);
     }
@@ -64,8 +63,16 @@ const handlePostsignUp = async (req,res)=>{
     }
 }
 
-const handleGetLogin = (req,res)=>{
-    
+const handlelogout = (req,res)=>{
+    const  token = req?.cookies?.jwt;
+    console.log("logout Request", token);
+   try{
+    blacklistToken(token);
+    res.send({ message: 'Logged out successfully' });
+   }
+  catch(err){
+    res.status(401).json({message : "Please Login First"})
+  }
 }
 
 const handlePostLogin = async(req,res)=>{
@@ -73,8 +80,9 @@ const handlePostLogin = async(req,res)=>{
     try{
         const user = await userSchme.login(email, password);
         const  token = getToken(user._id);
-        res.cookie('jwt',token, {httpOnly : true, maxAge : maxAge*1000});
-        res.status(200).json({user : user._id});
+        res.cookie('jwt',token, {httpOnly: false,secure: false,
+        sameSite: 'None', maxAge : maxAge*1000});
+        res.status(200).json(user);
     }
     catch(err){
         const error = handleErrors(err);
@@ -82,4 +90,4 @@ const handlePostLogin = async(req,res)=>{
     }
 }
 
-export {handleGetsignUp,handlePostsignUp,handleGetLogin,handlePostLogin};
+export {handleGetsignUp,handlePostsignUp,handlelogout,handlePostLogin};

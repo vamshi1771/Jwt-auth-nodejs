@@ -1,5 +1,5 @@
 import express from 'express';
-import { handleGetLogin,handlePostLogin,handleGetsignUp,
+import { handlelogout,handlePostLogin,handleGetsignUp,
         handlePostsignUp } from '../controllers/authControllers.js';
 import Router  from 'express';
 
@@ -9,7 +9,7 @@ authrouter.get('/signup',handleGetsignUp);
 
 authrouter.post('/signup',handlePostsignUp);
 
-authrouter.get('/login',handleGetLogin);
+authrouter.get('/logout',handlelogout);
 
 authrouter.post('/login',handlePostLogin);
 

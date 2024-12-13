@@ -65,7 +65,6 @@ const handlePostsignUp = async (req,res)=>{
 
 const handlelogout = (req,res)=>{
     const  token = req?.cookies?.jwt;
-    console.log("logout Request", token);
    try{
     blacklistToken(token);
     res.send({ message: 'Logged out successfully' });

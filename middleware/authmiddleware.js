@@ -8,13 +8,9 @@ const requireAuth = (req,res,next)=>{
                 console.log(err);
                 console.log(token);
                 // 401 status code for unauthorised user requests
-                console.log("I am at Middleware")
                 res.status(401).json({error : "Please login first"});
             }
             else {
-                console.log(decodedToken);
-                console.log(" i have token");
-                console.log(token);
                 next();
             }
         })

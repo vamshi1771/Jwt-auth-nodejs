@@ -66,7 +66,8 @@ const handlePostsignUp = async (req,res)=>{
 const handlelogout = (req,res)=>{
     const  token = req?.cookies?.jwt;
    try{
-    blacklistToken(token);
+    // blacklistToken(token);
+    res.cookie('jwt','', {httpOnly : true, maxAge : 100});
     res.send({ message: 'Logged out successfully' });
    }
   catch(err){
@@ -79,7 +80,7 @@ const handlePostLogin = async(req,res)=>{
     try{
         const user = await userSchme.login(email, password);
         const  token = getToken(user._id);
-        res.cookie('jwt',token, {httpOnly: false,secure: false,
+        res.cookie('jwt',token, {httpOnly: true,secure: true,
         sameSite: 'None', maxAge : maxAge*1000});
         res.status(200).json(user);
     }
